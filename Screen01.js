@@ -11,9 +11,24 @@ import { useState, useEffect } from "react";
 
 export default function Screen01() {
   const [data, setData] = useState([]);
+<<<<<<< HEAD
+=======
+  const [resData, setResData] = useState([]);
+>>>>>>> 3dd5cf0 (Handle data changes when clicking on Donut, Pink Donut, Floating Screen01)
   const [selectedButton, setSelectedButton] = useState(null);
   const handleButtonPress = (buttonId) => {
     setSelectedButton(buttonId);
+    if (buttonId === 2) {
+      const cloneData = [...resData];
+      const newData = cloneData.filter((item) => item.name.includes("Pink"));
+      setData(newData);
+    } else if (buttonId === 3) {
+      const cloneData = [...resData];
+      const newData = cloneData.filter((item) =>
+        item.name.includes("Floating")
+      );
+      setData(newData);
+    } else setData(resData);
   };
   useEffect(() => {
     // Define the API endpoint URL
@@ -26,6 +41,7 @@ export default function Screen01() {
       .then((response) => {
         // Handle the successful response
         setData(response.data);
+        setResData(response.data);
       })
       .catch((error) => {
         // Handle any errors
