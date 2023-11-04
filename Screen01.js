@@ -29,6 +29,16 @@ export default function Screen01() {
       setData(newData);
     } else setData(resData);
   };
+  const handleSearch = (text) => {
+    const filteredData = resData.filter((item) =>
+      item.name.toLowerCase().includes(text.toLowerCase())
+    );
+    // Tim thay ket qua va khong tim thay ket qua
+    filteredData.length === 0 ? setData([]) : setData(filteredData);
+
+    // Xoa het text search thi tra ve du lieu ban dau
+    if (text === "") setData(resData);
+  };
   useEffect(() => {
     // Define the API endpoint URL
     const apiUrl =
@@ -72,7 +82,11 @@ export default function Screen01() {
               marginBottom: 40,
             }}
           >
-            <TextInput placeholder="Search food"></TextInput>
+            <TextInput
+              placeholder="Search food"
+              style={{ outline: "none" }}
+              onChangeText={(text) => handleSearch(text)}
+            ></TextInput>
           </TouchableOpacity>
           <View
             style={{
