@@ -5,17 +5,16 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
 export default function Screen01() {
   const [data, setData] = useState([]);
-<<<<<<< HEAD
-=======
   const [resData, setResData] = useState([]);
->>>>>>> 3dd5cf0 (Handle data changes when clicking on Donut, Pink Donut, Floating Screen01)
   const [selectedButton, setSelectedButton] = useState(null);
+  const [loading, setLoading] = useState(true);
   const handleButtonPress = (buttonId) => {
     setSelectedButton(buttonId);
     if (buttonId === 2) {
@@ -46,85 +45,107 @@ export default function Screen01() {
       .catch((error) => {
         // Handle any errors
         console.error("Error fetching data:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 16, marginBottom: 25 }}>Welcome, Jala!</Text>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 40 }}>
-        Choice you Best food
-      </Text>
-      <TouchableOpacity
-        style={{ padding: 10, borderWidth: 1, width: "70%", marginBottom: 40 }}
-      >
-        <TextInput placeholder="Search food"></TextInput>
-      </TouchableOpacity>
-      <View
-        style={{
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexDirection: "row",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity
-          style={[
-            styles.button,
-            selectedButton === 1 ? styles.selectedButton : null,
-          ]}
-          onPress={() => handleButtonPress(1)}
-        >
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Donut</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            selectedButton === 2 ? styles.selectedButton : null,
-          ]}
-          onPress={() => handleButtonPress(2)}
-        >
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Pink Donut</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            selectedButton === 3 ? styles.selectedButton : null,
-          ]}
-          onPress={() => handleButtonPress(3)}
-        >
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Floating</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.itemContainer}>
-        {data.map((item, index) => (
-          <View style={styles.item}>
-            <Image
-              source={{ uri: item.image }}
-              style={{ width: 105, height: 105, borderRadius: 10 }}
-            ></Image>
-            <View
-              style={{
-                justifyContent: "flex-start",
-                gap: 5,
-                alignItems: "flex-start",
-              }}
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={{ alignSelf: "center" }}
+        />
+      ) : (
+        <View style={{ width: "100%" }}>
+          <Text style={{ fontSize: 16, marginBottom: 25 }}>Welcome, Jala!</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 40 }}>
+            Choice you Best food
+          </Text>
+          <TouchableOpacity
+            style={{
+              padding: 10,
+              borderWidth: 1,
+              width: "70%",
+              marginBottom: 40,
+            }}
+          >
+            <TextInput placeholder="Search food"></TextInput>
+          </TouchableOpacity>
+          <View
+            style={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+              width: "100%",
+            }}
+          >
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedButton === 1 ? styles.selectedButton : null,
+              ]}
+              onPress={() => handleButtonPress(1)}
             >
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                {item.name}
+              <Text style={{ fontSize: 14, fontWeight: "bold" }}>Donut</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedButton === 2 ? styles.selectedButton : null,
+              ]}
+              onPress={() => handleButtonPress(2)}
+            >
+              <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                Pink Donut
               </Text>
-              <Text style={{ fontSize: 16, fontWeight: "bold", color: "#ccc" }}>
-                {item.desc}
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                {item.price}
-              </Text>
-            </View>
-            <TouchableOpacity style={styles.plus}>
-              <Text style={{ fontSize: 30, fontWeight: "bold" }}>+</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedButton === 3 ? styles.selectedButton : null,
+              ]}
+              onPress={() => handleButtonPress(3)}
+            >
+              <Text style={{ fontSize: 14, fontWeight: "bold" }}>Floating</Text>
             </TouchableOpacity>
           </View>
-        ))}
-      </View>
+          <View style={styles.itemContainer}>
+            {data.map((item, index) => (
+              <View style={styles.item}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: 105, height: 105, borderRadius: 10 }}
+                ></Image>
+                <View
+                  style={{
+                    justifyContent: "flex-start",
+                    gap: 5,
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 16, fontWeight: "bold", color: "#ccc" }}
+                  >
+                    {item.desc}
+                  </Text>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                    {item.price}
+                  </Text>
+                </View>
+                <TouchableOpacity style={styles.plus}>
+                  <Text style={{ fontSize: 30, fontWeight: "bold" }}>+</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "flex-start",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     padding: 20,
     flexDirection: "column",
   },
